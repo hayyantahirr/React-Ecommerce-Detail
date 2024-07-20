@@ -50,7 +50,7 @@ const Navbar = () => {
               className="input input-bordered w-50 md:w-auto"
             />
             <button
-              className="btn btn-outline btn-error w-[100px] p-0"
+              className="btn btn-outline btn-error w-[100px] p-0 ml-5"
               onClick={logOutUser}
             >
               LogOut
