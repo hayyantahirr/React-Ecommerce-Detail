@@ -2,8 +2,26 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import Carousel from '../components/Carousel'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { app } from '../config/firebase/firebaseconfig'
+import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
 const Home = () => {
+  const auth = getAuth(app);
+  const navigate = useNavigate();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        console.log(uid);
+      } else {
+        console.log("please login first!");
+        navigate("/");
+      }
+    });
+  });
+
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true) // State to manage loading
 
@@ -30,6 +48,7 @@ const Home = () => {
 
   return (
     <>
+    
       <div className='flex justify-center items-center'>
         <div>
           <h1 className='text-xl'>Scroll Down!!</h1>

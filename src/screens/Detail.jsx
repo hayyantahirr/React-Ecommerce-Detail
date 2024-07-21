@@ -28,17 +28,17 @@ const Detail = () => {
               className="w-1/5 border rounded-3xl"
             />
             <div className="border text-center w-1/2 rounded-3xl">
-              <h1 className="mt-5 text-2xl text-white">{products.title}</h1>
+              <h1 className="mt-5 text-2xl ">{products.title}</h1>
               <div>
-                <h1 className="text-xl text-white">
+                <h1 className="text-xl ">
                   price :{" "}
                   <span className="text-[#a6adad] text-base">{products.price}$</span>
                 </h1>
-                <h1 className="text-xl text-white">
+                <h1 className="text-xl ">
                   Brand :{" "}
                   <span className="text-[#a6adad] text-base">{products.brand}</span>
                 </h1>
-                <h1 className="text-xl text-white">
+                <h1 className="text-xl ">
                   category :{" "}
                   <span className="text-[#a6adad] text-base">{products.category}</span>
                 </h1>
