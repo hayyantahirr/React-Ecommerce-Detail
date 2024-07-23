@@ -1,14 +1,15 @@
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { app } from "../config/firebase/firebaseconfig";
 
 const Navbar = () => {
   const auth = getAuth(app);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = useState(null);
-  const [error, setError] = useState();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -32,6 +33,8 @@ const Navbar = () => {
       });
   };
 
+  const hideButtons = location.pathname === "/login" || location.pathname === "/";
+
   return (
     <>
       <div className="navbar bg-base-100">
@@ -50,7 +53,7 @@ const Navbar = () => {
               placeholder="Search"
               className="input input-bordered w-50 md:w-auto"
             />
-            {user && (
+            {user && !hideButtons && (
               <button className="btn btn-outline btn-info w-[120px] p-0 ml-5">
                 Sell Product
               </button>
@@ -84,7 +87,7 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                {user && <a onClick={logOutUser}>Logout</a>}
+                {user && !hideButtons && <a onClick={logOutUser}>Logout</a>}
                 {error && <h1 className="text-center text-red-500">{error}</h1>}
               </li>
             </ul>

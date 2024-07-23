@@ -7,6 +7,7 @@ import Home from "./screens/Home";
 import Detail from "./screens/Detail";
 import Register from "./screens/Register";
 import Login from "./screens/Login";
+import Sell from "./screens/Sell";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       { path: "home", element: <Home /> },
+      { path: "sell", element: <Sell /> },
       { path: "login", element: <Login /> },
       { path: "/detail/:id", element: <Detail /> },
     ],

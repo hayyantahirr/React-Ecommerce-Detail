@@ -5,11 +5,13 @@ import Carousel from '../components/Carousel'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { app } from '../config/firebase/firebaseconfig'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+
 
 const Home = () => {
   const auth = getAuth(app);
   const navigate = useNavigate();
+
+  // this code is to make sure that nobody can get to home until he is logged in 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -24,7 +26,25 @@ const Home = () => {
 
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true) // State to manage loading
+ const [users,setUsers] =useState()
 
+//  this code is for welcomming the user 
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+setUsers(user)
+
+    const uid = user.uid;
+  
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+
+
+  // this is for data fetching purpose only 
   useEffect(() => {
     axios('https://dummyjson.com/products')
       .then((res) => {
@@ -37,7 +57,8 @@ const Home = () => {
         setLoading(false) // Set loading to false if there's an error
       })
   }, [])
-
+  
+  // this code is written to show the loading 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -48,8 +69,11 @@ const Home = () => {
 
   return (
     <>
-    
+    <h1 className='text-2xl text-left'>Welcome <span className='text-xl font-bold italic'>{users?.email}</span>,</h1>
       <div className='flex justify-center items-center'>
+      
+          
+        
         <div>
           <h1 className='text-xl'>Scroll Down!!</h1>
         </div>

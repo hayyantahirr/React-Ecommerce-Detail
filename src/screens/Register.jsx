@@ -1,20 +1,24 @@
 import React, { useRef, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import "../Styles/register.css";
-import { app } from "../config/firebase/firebaseconfig";
+import { app, db } from "../config/firebase/firebaseconfig";
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc } from "firebase/firestore";
+import { Database } from "firebase/database";
 const Register = () => {
   const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
-  const [error,setError]=useState()
+  const name = useRef();
+  const age = useRef();
+  const [error, setError] = useState();
 
   // firebase Auth
   const auth = getAuth(app);
 
   // function made for registering the user
 
-  function registerUser(event) {
+  async function registerUser(event) {
     event.preventDefault();
 
     // Register user
@@ -32,15 +36,37 @@ const Register = () => {
       .catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage);
-        setError("Oh no ! Looks like you have already been registered!")
+        setError("Oh no ! Looks like you have already been registered!");
       });
 
+    // Saving the data in the Database
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        name: name.current.value,
+        age: age.current.value,
+        email: email.current.value,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
+    // check the value if they are correctly recieved or not
     console.log(email.current.value);
     console.log(password.current.value);
+    console.log(name.current.value);
+    console.log(email.current.value);
+
+    // emptying the inputs after the form is submitted
 
     email.current.value = "";
     password.current.value = "";
+    name.current.value = "";
+    age.current.value = "";
   }
+
+  // this function is made to send them to login page if they are already registered
+
   function sendToLogin(params) {
     navigate("/login");
   }
@@ -49,6 +75,12 @@ const Register = () => {
     <>
       <form onSubmit={registerUser}>
         <h1 className="text-center text-2xl mt-20">Register Yourself Now !</h1>
+        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+          <input type="text" placeholder="Name" className=" grow" ref={name} />
+        </label>
+        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+          <input type="number" placeholder="Age" className=" grow" ref={age} />
+        </label>
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -81,8 +113,9 @@ const Register = () => {
             ref={password}
           />
         </label>
+
         <div className="flex justify-center">
-          <button className="btn btn-outline btn-success mt-8" >
+          <button className="btn btn-outline btn-success mt-8">
             Register{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -98,10 +131,11 @@ const Register = () => {
                 d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
               />
             </svg>
-          </button></div>
-          <h1 onClick={sendToLogin} className="alreadylogin text-center mt-8">
-            Already Have an Account?
-          </h1>
+          </button>
+        </div>
+        <h1 onClick={sendToLogin} className="alreadylogin text-center mt-8">
+          Already Have an Account?
+        </h1>
         <h1 className="text-center mt-8">{error}</h1>
       </form>
     </>
