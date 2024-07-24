@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../config/firebase/firebaseconfig";
 import { addDoc, collection } from "firebase/firestore";
 import "../Styles/universal.css";
+
 function Sell() {
   const img = useRef();
   const title = useRef();
@@ -11,20 +12,25 @@ function Sell() {
   const brand = useRef();
   const category = useRef();
   const description = useRef();
+
   const navigate = useNavigate();
   const storage = getStorage();
 
-  async function sellProduct(event) {
-    // preventing the default behaviours
 
+
+  async function sellProduct(event) {
+    // this is to prevent its default behavior
     event.preventDefault();
     console.log(img.current.files[0].name);
-
+// we are setting up image in the data base though url 
     const storageRef = ref(storage, "product/" + img.current.files[0].name);
 
     await uploadBytes(storageRef, img.current.files[0]);
 
     const url = await getDownloadURL(ref(storageRef));
+    
+    console.log(url);
+    // now we are sending the data base our collection which we have collected through input fields 
     try {
       await addDoc(collection(db, "product"), {
         title: title.current.value,
@@ -35,12 +41,12 @@ function Sell() {
         description: description.current.value,
       });
       console.log("congrats kam hogya");
+      navigate(-1); // Navigate back after successful submission
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-    // testing of the fields
 
-    
+    // testing all the value 
     console.log(title.current.value);
     console.log(price.current.value);
     console.log(brand.current.value);
@@ -48,30 +54,26 @@ function Sell() {
     console.log(description.current.value);
   }
 
-  //   function addIt(params) {
-  //     navigate(-1);
-  //   }
-
   return (
     <>
       <form onSubmit={sellProduct}>
         <h1 className="text-center text-2xl mt-20">Sell a Product</h1>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
-          <input type="file" className=" grow cursor-pointer" ref={img} />
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
+          <input type="file" className="grow cursor-pointer" ref={img} />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
             placeholder="Title of Product"
-            className=" grow cursor-pointer"
+            className="grow cursor-pointer"
             ref={title}
           />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="number"
             placeholder="price"
-            className=" grow cursor-pointer"
+            className="grow cursor-pointer"
             ref={price}
           />
         </label>
@@ -79,23 +81,23 @@ function Sell() {
           <input
             type="text"
             placeholder="Brand"
-            className=" grow cursor-pointer"
+            className="grow cursor-pointer"
             ref={brand}
           />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
             placeholder="Category"
-            className=" grow cursor-pointer"
+            className="grow cursor-pointer"
             ref={category}
           />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
             placeholder="Description"
-            className=" grow cursor-pointer"
+            className="grow cursor-pointer"
             ref={description}
           />
         </label>

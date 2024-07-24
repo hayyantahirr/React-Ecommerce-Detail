@@ -1,5 +1,3 @@
-
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,24 +11,26 @@ export default {
         synthwave: {
           ...require("daisyui/src/theming/themes")["synthwave"],
           "*": {
-            "color": "white",
-            
+            color: "white",
           },
-          
+          input: {
+            color: "black",
+          },
         },
       },
       {
         emerald: {
           ...require("daisyui/src/theming/themes")["emerald"],
           "*": {
-            "color": "black",
-            
+            color: "black",
           },
-          
+          input: {
+            color: "black",
+          },
         },
       },
       "emerald",
-      "synthwave"
+      "synthwave",
     ],
   },
 };
