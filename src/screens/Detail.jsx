@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "../Styles/universal.css";
 
 const Detail = () => {
   const param = useParams();

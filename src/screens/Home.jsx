@@ -5,7 +5,7 @@ import Carousel from '../components/Carousel'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { app } from '../config/firebase/firebaseconfig'
 import { useNavigate } from 'react-router-dom'
-
+import "../Styles/universal.css";
 
 const Home = () => {
   const auth = getAuth(app);

@@ -4,7 +4,8 @@ import "../Styles/register.css";
 import { app, db } from "../config/firebase/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
-import { Database } from "firebase/database";
+
+import "../Styles/universal.css";
 const Register = () => {
   const navigate = useNavigate();
   const email = useRef();

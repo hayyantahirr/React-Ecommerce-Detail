@@ -3,6 +3,7 @@ import "../Styles/login.css";
 import { useNavigate } from "react-router-dom";
 import { app } from "../config/firebase/firebaseconfig";
 import { getAuth,signInWithEmailAndPassword } from "firebase/auth";
+import "../Styles/universal.css";
 const Login = () => {
 const navigate = useNavigate();
 const auth = getAuth(app);
