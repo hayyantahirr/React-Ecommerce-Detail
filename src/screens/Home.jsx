@@ -42,10 +42,11 @@ const Home = () => {
   });
 
   // this is for data fetching purpose only
+
   async function gettingDocument(params) {
     // axios('https://dummyjson.com/products')
     //   .then((res) => {
-    //     console.log(res.data.products)
+    // console.log(res.data.products)
     //     setProduct(res.data.products)
     //     setLoading(false) // Set loading to false after data is fetched
     //   })
@@ -53,8 +54,23 @@ const Home = () => {
     //     console.log(err)
     //     setLoading(false) // Set loading to false if there's an error
     //   })
+    const q = query(collection(db, "product"));
+    try {
+      const querySnapshot = await getDocs(q);
+      const allDocs = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        data.id = doc.id; // Add the document ID to the data
+        return data;
+      });
+      setProduct(allDocs);
+      setLoading(false);
+      console.log(allDocs);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
 
-    
+    // console.log(product);
   }
 
   useEffect(() => {
@@ -89,9 +105,8 @@ const Home = () => {
             console.log(item);
             return (
               <Card
-                key={item.id}
                 title={item.title}
-                desc={item.description.slice(0, 40)}
+                desc={item.description.slice(0, 50)}
                 img={item.img}
                 id={item.id}
                 price={item.price}

@@ -16,21 +16,19 @@ function Sell() {
   const navigate = useNavigate();
   const storage = getStorage();
 
-
-
   async function sellProduct(event) {
     // this is to prevent its default behavior
     event.preventDefault();
     console.log(img.current.files[0].name);
-// we are setting up image in the data base though url 
+    // we are setting up image in the data base though url
     const storageRef = ref(storage, "product/" + img.current.files[0].name);
 
     await uploadBytes(storageRef, img.current.files[0]);
 
     const url = await getDownloadURL(ref(storageRef));
-    
+
     console.log(url);
-    // now we are sending the data base our collection which we have collected through input fields 
+    // now we are sending the data base our collection which we have collected through input fields
     try {
       await addDoc(collection(db, "product"), {
         title: title.current.value,
@@ -46,7 +44,7 @@ function Sell() {
       console.error("Error adding document: ", e);
     }
 
-    // testing all the value 
+    // testing all the value
     console.log(title.current.value);
     console.log(price.current.value);
     console.log(brand.current.value);

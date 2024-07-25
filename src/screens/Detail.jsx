@@ -1,51 +1,84 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../Styles/universal.css";
+import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc
+import { db } from "../config/firebase/firebaseconfig";
 
 const Detail = () => {
   const param = useParams();
   const navigate = useNavigate();
-  const [products, setProducts] = useState(null);
+  const [product, setProduct] = useState(null); // Single product, not array
+  const [loading, setLoading] = useState(true); // Add loading state
 
   function back() {
     navigate(-1);
   }
 
+  async function getDataThroughId() {
+    const docRef = doc(db, "product", param.id); // Use doc to get a specific document
+    try {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        data.id = docSnap.id; // Add document ID to the data
+        setProduct(data);
+        console.log(data);
+      } else {
+        console.log("No such document!");
+      }
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    axios(`https://dummyjson.com/products/${param.id}`).then((res) => {
-      setProducts(res.data);
-    });
-  }, [param.id]);
+    getDataThroughId();
+  }, [param.id]); // Add param.id as a dependency
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
     <>
-      {products ? (
+      {product ? (
         <div className="mt-7 mb-8">
           <div className="flex justify-center gap-5">
             <img
-              src={products.thumbnail}
+              src={product.img}
               alt=""
               className="w-1/5 border rounded-3xl"
             />
             <div className="border text-center w-1/2 rounded-3xl">
-              <h1 className="mt-5 text-2xl ">{products.title}</h1>
+              <h1 className="mt-5 text-2xl ">{product.title}</h1>
               <div>
                 <h1 className="text-xl ">
                   price :{" "}
-                  <span className="text-[#a6adad] text-base">{products.price}$</span>
+                  <span className="text-[#a6adad] text-base">
+                    {product.price}$
+                  </span>
                 </h1>
                 <h1 className="text-xl ">
                   Brand :{" "}
-                  <span className="text-[#a6adad] text-base">{products.brand}</span>
+                  <span className="text-[#a6adad] text-base">
+                    {product.brand}
+                  </span>
                 </h1>
                 <h1 className="text-xl ">
                   category :{" "}
-                  <span className="text-[#a6adad] text-base">{products.category}</span>
+                  <span className="text-[#a6adad] text-base">
+                    {product.category}
+                  </span>
                 </h1>
                 <div className="w-1/3 mx-auto mt-4">
                   {" "}
-                  <h1 className="text-wrap">{products.description}</h1>
+                  <h1 className="text-wrap">{product.description}</h1>
                 </div>
               </div>
             </div>
