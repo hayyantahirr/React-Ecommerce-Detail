@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"; // React Router navigation
 import { db } from "../config/firebase/firebaseconfig"; // Firebase Firestore database
 import { addDoc, collection } from "firebase/firestore"; // Firestore functions for adding documents
 import "../Styles/universal.css"; // Universal CSS
+import { Link } from "react-router-dom"; // Import Link for possible navigation within the component
 
 function Sell() {
   // Refs for form inputs
@@ -137,6 +138,13 @@ function Sell() {
               />
             </svg>
           </button>
+        </div>
+        
+        {/* Navigation link (if needed) */}
+        <div className="flex justify-center">
+          <Link to="/somepage" className="text-blue-500 underline">
+            Go to some page
+          </Link>
         </div>
       </form>
     </>

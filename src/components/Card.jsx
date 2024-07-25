@@ -1,18 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "../Styles/universal.css";
 
 const Card = ({ title, img, desc, id }) => {
-  const navigate = useNavigate(); // Hook for navigation
-
-  // Function to navigate to the detail page of the product
-  function click() {
-    navigate(`/detail/${id}`);
-  }
-
   return (
     <>
-      {/* Card layout with image, title, description, and button */}
+      {/* Card layout with image, title, description, and link */}
       <div className="card bg-base-100 w-96 shadow-xl">
         <figure className="px-10 pt-10">
           <img src={img} alt="Product" className="rounded-xl h-3/5" />
@@ -22,9 +15,10 @@ const Card = ({ title, img, desc, id }) => {
           <p>{desc}....</p>
 
           <div className="card-actions">
-            <button className="btn btn-primary" onClick={click}>
+            {/* Link for navigation */}
+            <Link to={`/detail/${id}`} className="btn btn-primary">
               See more....
-            </button>
+            </Link>
           </div>
         </div>
       </div>

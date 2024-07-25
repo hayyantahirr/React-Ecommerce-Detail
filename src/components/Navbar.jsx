@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"; // Firebase authentication functions
 import React, { useEffect, useState } from "react"; // React and hooks
-import { useNavigate, useLocation } from "react-router-dom"; // React Router hooks
+import { useNavigate, useLocation, Link } from "react-router-dom"; // React Router hooks
 import { app } from "../config/firebase/firebaseconfig"; // Firebase configuration
 import "../Styles/universal.css"; // Universal CSS
 
@@ -46,19 +46,13 @@ const Navbar = () => {
   }, [auth]);
 
   // Function to log out the user
-  const logOutUser = () => {
-    signOut(auth)
-      .then(() => {
-        navigate("/"); // Navigate to home page after logging out
-      })
-      .catch((error) => {
-        setError("Oops! Looks like a problem occurred");
-      });
-  };
-
-  // Function to navigate to the selling page
-  const sendToSeller = () => {
-    navigate("/sell");
+  const logOutUser = async () => {
+    try {
+      await signOut(auth);
+      navigate("/"); // Navigate to home page after logging out
+    } catch (error) {
+      setError("Oops! Looks like a problem occurred");
+    }
   };
 
   // Hide buttons on specific pages
@@ -76,7 +70,9 @@ const Navbar = () => {
             alt="Universal Mart Logo"
             width="70px"
           />
-          <a className="btn btn-ghost text-xl">Universal Mart</a>
+          <Link to="/" className="btn btn-ghost text-xl">
+            Universal Mart
+          </Link>
         </div>
         <div className="flex-none flex items-center gap-2">
           <div className="form-control flex flex-row items-center">
@@ -86,12 +82,12 @@ const Navbar = () => {
               className="input input-bordered w-50 md:w-auto"
             />
             {user && !hideButtons && (
-              <button
+              <Link
+                to="/sell"
                 className="btn btn-outline btn-info w-[120px] p-0 ml-5"
-                onClick={sendToSeller}
               >
                 Sell Product
-              </button>
+              </Link>
             )}
           </div>
           {error && <h1 className="text-center text-red-500">{error}</h1>}
@@ -129,7 +125,7 @@ const Navbar = () => {
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-square "
+              className="btn btn-ghost btn-square"
             >
               <div className="btn btn-square btn-ghost">
                 <svg

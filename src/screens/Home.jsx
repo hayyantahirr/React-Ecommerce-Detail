@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app, db } from "../config/firebase/firebaseconfig";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "../Styles/universal.css";
 import { collection, getDocs, query } from "firebase/firestore";
 
 const Home = () => {
   const auth = getAuth(app); // Initialize Firebase Authentication
-  const navigate = useNavigate(); // Hook for navigation
-
   const [product, setProduct] = useState(null); // State to hold product data
   const [loading, setLoading] = useState(true); // State to manage loading status
   const [users, setUsers] = useState(); // State to hold user data
@@ -22,12 +20,13 @@ const Home = () => {
         setUsers(user);
       } else {
         console.log("please login first!");
-        navigate("/"); // Redirect to login page if not authenticated
+        // Use Link for navigation is not appropriate here, as we need to redirect programmatically
+        window.location.href = "/"; // Redirect to login page if not authenticated
       }
     });
 
     return () => unsubscribe(); // Cleanup subscription on unmount
-  }, [auth, navigate]);
+  }, [auth]);
 
   // Function to fetch product data from Firestore
   async function gettingDocument() {
@@ -70,21 +69,22 @@ const Home = () => {
       </h1>
       
       {/* Displaying fetched products in a card format */}
-      <div className="flex gap-3 flex-wrap justify-center">
+      <div className="flex gap-3 flex-wrap justify-center mb-5">
         {product ? (
           product.map((item) => {
             console.log(item);
             return (
-              <Card
-                key={item.id} // Add key prop to each Card component
-                title={item.title}
-                desc={item.description.slice(0, 50)} // Slice description to show only first 50 characters
-                img={item.img}
-                id={item.id}
-                price={item.price}
-                category={item.category}
-                brand={item.brand}
-              />
+              <Link to={`/product/${item.id}`} key={item.id}>
+                <Card
+                  title={item.title} // Add key prop to each Card component
+                  desc={item.description.slice(0, 50)} // Slice description to show only first 50 characters
+                  img={item.img}
+                  id={item.id}
+                  price={item.price}
+                  category={item.category}
+                  brand={item.brand}
+                />
+              </Link>
             );
           })
         ) : (

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Navigation hook
+import { Link, useNavigate } from "react-router-dom"; // Navigation hook
 import { app } from "../config/firebase/firebaseconfig"; // Firebase configuration
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Firebase authentication functions
 import "../Styles/login.css"; // Login page styles
@@ -95,9 +95,9 @@ const Login = () => {
           </svg>
         </button>
       </div>
-      <h1 onClick={sendToRegister} className="alreadylogin text-center mt-8">
+<Link to="/"><h1 className="alreadylogin text-center mt-8">
         Don't Have an Account?
-      </h1>
+      </h1></Link>
       <h1 className="text-center mt-8">{error}</h1>
     </form>
   );

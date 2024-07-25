@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Use Link for navigation
 import { collection, addDoc } from "firebase/firestore";
 import { app, db } from "../config/firebase/firebaseconfig";
 import "../Styles/register.css"; // Register page styles
 import "../Styles/universal.css"; // Universal styles
 
 const Register = () => {
-  const navigate = useNavigate(); // Hook for navigation
   const email = useRef(); // Reference to email input field
   const password = useRef(); // Reference to password input field
   const name = useRef(); // Reference to name input field
@@ -23,11 +22,33 @@ const Register = () => {
 
     // Register user with email and password
     createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // User successfully registered
         const user = userCredential.user;
-        navigate("/login"); // Navigate to login page after successful registration
-        console.log(user);
+
+        // Save user data in the Firestore database
+        try {
+          const docRef = await addDoc(collection(db, "users"), {
+            name: name.current.value,
+            age: age.current.value,
+            email: email.current.value,
+          });
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+
+        // Logging input values for debugging
+        console.log(email.current.value);
+        console.log(password.current.value);
+        console.log(name.current.value);
+        console.log(age.current.value);
+
+        // Clearing the input fields
+        email.current.value = "";
+        password.current.value = "";
+        name.current.value = "";
+        age.current.value = "";
       })
       .catch((error) => {
         // Handle registration error
@@ -35,35 +56,6 @@ const Register = () => {
         console.log(errorMessage);
         setError("Oh no! Looks like you have already been registered!");
       });
-
-    // Save user data in the Firestore database
-    try {
-      const docRef = await addDoc(collection(db, "users"), {
-        name: name.current.value,
-        age: age.current.value,
-        email: email.current.value,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-
-    // Logging input values for debugging
-    console.log(email.current.value);
-    console.log(password.current.value);
-    console.log(name.current.value);
-    console.log(age.current.value);
-
-    // Clearing the input fields
-    email.current.value = "";
-    password.current.value = "";
-    name.current.value = "";
-    age.current.value = "";
-  }
-
-  // Function to navigate to the login page
-  function sendToLogin() {
-    navigate("/login");
   }
 
   return (
@@ -128,9 +120,11 @@ const Register = () => {
             </svg>
           </button>
         </div>
-        <h1 onClick={sendToLogin} className="alreadylogin text-center mt-8">
-          Already Have an Account?
-        </h1>
+        <Link to='/login'>
+          <h1 className="alreadylogin text-center mt-8">
+            Already Have an Account?
+          </h1>
+        </Link>
         <h1 className="text-center mt-8">{error}</h1>
       </form>
     </>

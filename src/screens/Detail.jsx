@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom"; // Import Link for other navigation if needed
 import "../Styles/universal.css";
 import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc from Firestore
 import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
@@ -12,7 +12,7 @@ const Detail = () => {
 
   // Function to navigate back to the previous page
   function back() {
-    navigate(-1);
+    navigate(-1); // Go back to the previous page
   }
 
   // Function to fetch product data based on the document ID from Firestore
@@ -53,36 +53,35 @@ const Detail = () => {
     <>
       {product ? (
         // Display product details if product data is available
-        <div className="mt-7 mb-8">
+        <div className="mt-7 mb-8 ">
           <div className="flex justify-center gap-5">
             <img
               src={product.img}
-              alt=""
+              alt={product.title}
               className="w-1/5 border rounded-3xl"
             />
             <div className="border text-center w-1/2 rounded-3xl">
               <h1 className="mt-5 text-2xl ">{product.title}</h1>
               <div>
                 <h1 className="text-xl ">
-                  price :{" "}
+                  Price:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.price}$
                   </span>
                 </h1>
                 <h1 className="text-xl ">
-                  Brand :{" "}
+                  Brand:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.brand}
                   </span>
                 </h1>
                 <h1 className="text-xl ">
-                  category :{" "}
+                  Category:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.category}
                   </span>
                 </h1>
-                <div className="w-1/3 mx-auto mt-4">
-                  {" "}
+                <div className="w-1/3 mx-auto mt-4 mb-5">
                   <h1 className="text-wrap">{product.description}</h1>
                 </div>
               </div>
@@ -106,6 +105,10 @@ const Detail = () => {
               </svg>
               Go Back to Home
             </button>
+          </div>
+          {/* Example of a navigation link */}
+          <div className="flex justify-center mt-4">
+           
           </div>
         </div>
       ) : (
