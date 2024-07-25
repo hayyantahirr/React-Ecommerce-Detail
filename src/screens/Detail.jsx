@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../Styles/universal.css";
-import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc
-import { db } from "../config/firebase/firebaseconfig";
+import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc from Firestore
+import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
 
 const Detail = () => {
-  const param = useParams();
-  const navigate = useNavigate();
-  const [product, setProduct] = useState(null); // Single product, not array
-  const [loading, setLoading] = useState(true); // Add loading state
+  const param = useParams(); // Hook to get URL parameters
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  const [product, setProduct] = useState(null); // State to hold the product data
+  const [loading, setLoading] = useState(true); // State to manage loading status
 
+  // Function to navigate back to the previous page
   function back() {
     navigate(-1);
   }
 
+  // Function to fetch product data based on the document ID from Firestore
   async function getDataThroughId() {
-    const docRef = doc(db, "product", param.id); // Use doc to get a specific document
+    const docRef = doc(db, "product", param.id); // Reference to the specific document
     try {
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(docRef); // Fetch the document snapshot
       if (docSnap.exists()) {
-        const data = docSnap.data();
-        data.id = docSnap.id; // Add document ID to the data
-        setProduct(data);
-        console.log(data);
+        const data = docSnap.data(); // Get the document data
+        data.id = docSnap.id; // Add the document ID to the data
+        setProduct(data); // Update the product state with the fetched data
+        console.log(data); // Log the data for debugging
       } else {
-        console.log("No such document!");
+        console.log("No such document!"); // Log if no document is found
       }
-      setLoading(false);
+      setLoading(false); // Set loading to false after fetching data
     } catch (e) {
-      console.log(e);
-      setLoading(false);
+      console.log(e); // Log any error that occurs
+      setLoading(false); // Set loading to false in case of error
     }
   }
 
+  // useEffect hook to call getDataThroughId when the component mounts or param.id changes
   useEffect(() => {
     getDataThroughId();
-  }, [param.id]); // Add param.id as a dependency
+  }, [param.id]);
 
+  // Display loading spinner while data is being fetched
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -48,6 +52,7 @@ const Detail = () => {
   return (
     <>
       {product ? (
+        // Display product details if product data is available
         <div className="mt-7 mb-8">
           <div className="flex justify-center gap-5">
             <img
@@ -104,6 +109,7 @@ const Detail = () => {
           </div>
         </div>
       ) : (
+        // Display loading spinner if product data is not available
         <div className="flex items-center justify-center min-h-screen">
           <span className="loading loading-dots loading-lg"></span>
         </div>

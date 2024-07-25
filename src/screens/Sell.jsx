@@ -1,11 +1,12 @@
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { db } from "../config/firebase/firebaseconfig";
-import { addDoc, collection } from "firebase/firestore";
-import "../Styles/universal.css";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage"; // Firebase storage functions
+import React, { useRef } from "react"; // React and useRef hook
+import { useNavigate } from "react-router-dom"; // React Router navigation
+import { db } from "../config/firebase/firebaseconfig"; // Firebase Firestore database
+import { addDoc, collection } from "firebase/firestore"; // Firestore functions for adding documents
+import "../Styles/universal.css"; // Universal CSS
 
 function Sell() {
+  // Refs for form inputs
   const img = useRef();
   const title = useRef();
   const price = useRef();
@@ -13,22 +14,24 @@ function Sell() {
   const category = useRef();
   const description = useRef();
 
-  const navigate = useNavigate();
-  const storage = getStorage();
+  const navigate = useNavigate(); // Hook for navigation
+  const storage = getStorage(); // Get Firebase storage
 
+  // Function to handle form submission
   async function sellProduct(event) {
-    // this is to prevent its default behavior
-    event.preventDefault();
-    console.log(img.current.files[0].name);
-    // we are setting up image in the data base though url
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Get image file and prepare storage reference
     const storageRef = ref(storage, "product/" + img.current.files[0].name);
 
+    // Upload image to Firebase storage
     await uploadBytes(storageRef, img.current.files[0]);
 
+    // Get the download URL of the uploaded image
     const url = await getDownloadURL(ref(storageRef));
-
     console.log(url);
-    // now we are sending the data base our collection which we have collected through input fields
+
+    // Add product details to Firestore
     try {
       await addDoc(collection(db, "product"), {
         title: title.current.value,
@@ -38,13 +41,13 @@ function Sell() {
         category: category.current.value,
         description: description.current.value,
       });
-      console.log("congrats kam hogya");
+      console.log("Product added successfully");
       navigate(-1); // Navigate back after successful submission
     } catch (e) {
       console.error("Error adding document: ", e);
     }
 
-    // testing all the value
+    // Logging all values for testing
     console.log(title.current.value);
     console.log(price.current.value);
     console.log(brand.current.value);
@@ -56,9 +59,13 @@ function Sell() {
     <>
       <form onSubmit={sellProduct}>
         <h1 className="text-center text-2xl mt-20">Sell a Product</h1>
+        
+        {/* Image input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input type="file" className="grow cursor-pointer" ref={img} />
         </label>
+
+        {/* Title input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
@@ -67,14 +74,18 @@ function Sell() {
             ref={title}
           />
         </label>
+
+        {/* Price input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="number"
-            placeholder="price"
+            placeholder="Price"
             className="grow cursor-pointer"
             ref={price}
           />
         </label>
+
+        {/* Brand input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
@@ -83,6 +94,8 @@ function Sell() {
             ref={brand}
           />
         </label>
+
+        {/* Category input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
@@ -91,6 +104,8 @@ function Sell() {
             ref={category}
           />
         </label>
+
+        {/* Description input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input
             type="text"
@@ -100,12 +115,13 @@ function Sell() {
           />
         </label>
 
+        {/* Submit button */}
         <div className="flex justify-center">
           <button
             className="btn btn-outline btn-success mt-8 mb-5"
             type="submit"
           >
-            Add it !{" "}
+            Add it!{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

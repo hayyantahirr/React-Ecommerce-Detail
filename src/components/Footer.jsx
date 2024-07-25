@@ -7,9 +7,9 @@ const Footer = () => {
     <aside>
     <img src="/src/assets/universal_mart-removebg-preview.png"  alt="" width={"120px"}/>
       <p>
-        ACME Industries Ltd.
+        Universal Industries Ltd.
         <br />
-        Providing reliable tech since 1992
+        Providing reliable Products since 1992
       </p>
     </aside>
     <nav>

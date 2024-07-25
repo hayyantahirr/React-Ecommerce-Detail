@@ -1,46 +1,42 @@
 import React, { useRef, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import "../Styles/register.css";
-import { app, db } from "../config/firebase/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
+import { app, db } from "../config/firebase/firebaseconfig";
+import "../Styles/register.css"; // Register page styles
+import "../Styles/universal.css"; // Universal styles
 
-import "../Styles/universal.css";
 const Register = () => {
-  const navigate = useNavigate();
-  const email = useRef();
-  const password = useRef();
-  const name = useRef();
-  const age = useRef();
-  const [error, setError] = useState();
+  const navigate = useNavigate(); // Hook for navigation
+  const email = useRef(); // Reference to email input field
+  const password = useRef(); // Reference to password input field
+  const name = useRef(); // Reference to name input field
+  const age = useRef(); // Reference to age input field
+  const [error, setError] = useState(); // State to store any errors
 
-  // firebase Auth
+  // Firebase authentication instance
   const auth = getAuth(app);
 
-  // function made for registering the user
-
+  // Function to handle user registration
   async function registerUser(event) {
     event.preventDefault();
 
-    // Register user
-    createUserWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
+    // Register user with email and password
+    createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
       .then((userCredential) => {
-        // Signed up
+        // User successfully registered
         const user = userCredential.user;
-        navigate("/login");
+        navigate("/login"); // Navigate to login page after successful registration
         console.log(user);
       })
       .catch((error) => {
+        // Handle registration error
         const errorMessage = error.message;
         console.log(errorMessage);
-        setError("Oh no ! Looks like you have already been registered!");
+        setError("Oh no! Looks like you have already been registered!");
       });
 
-    // Saving the data in the Database
+    // Save user data in the Firestore database
     try {
       const docRef = await addDoc(collection(db, "users"), {
         name: name.current.value,
@@ -52,35 +48,33 @@ const Register = () => {
       console.error("Error adding document: ", e);
     }
 
-    // check the value if they are correctly recieved or not
+    // Logging input values for debugging
     console.log(email.current.value);
     console.log(password.current.value);
     console.log(name.current.value);
-    console.log(email.current.value);
+    console.log(age.current.value);
 
-    // emptying the inputs after the form is submitted
-
+    // Clearing the input fields
     email.current.value = "";
     password.current.value = "";
     name.current.value = "";
     age.current.value = "";
   }
 
-  // this function is made to send them to login page if they are already registered
-
-  function sendToLogin(params) {
+  // Function to navigate to the login page
+  function sendToLogin() {
     navigate("/login");
   }
 
   return (
     <>
       <form onSubmit={registerUser}>
-        <h1 className="text-center text-2xl mt-20">Register Yourself Now !</h1>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
-          <input type="text" placeholder="Name" className=" grow" ref={name} />
+        <h1 className="text-center text-2xl mt-20">Register Yourself Now!</h1>
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
+          <input type="text" placeholder="Name" className="grow" ref={name} />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
-          <input type="number" placeholder="Age" className=" grow" ref={age} />
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
+          <input type="number" placeholder="Age" className="grow" ref={age} />
         </label>
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <svg
@@ -94,7 +88,7 @@ const Register = () => {
           </svg>
           <input type="text" placeholder="Email" ref={email} />
         </label>
-        <label className="inp input input-bordered flex items-center gap-2  w-1/2 mx-auto mt-7">
+        <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -110,7 +104,7 @@ const Register = () => {
           <input
             type="password"
             placeholder="Password"
-            className=" grow"
+            className="grow"
             ref={password}
           />
         </label>
