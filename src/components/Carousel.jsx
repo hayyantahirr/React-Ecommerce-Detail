@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Carousel = () => {
-    const navigate =useNavigate()
+  const navigate = useNavigate();
   const [carouse, setCarouse] = useState([]);
   useEffect(() => {
     axios("https://dummyjson.com/products")
@@ -16,26 +16,21 @@ const Carousel = () => {
       });
   }, []);
 
-  function click(){
-    navigate(`/detail/${id}`)
+  function click() {
+    navigate(`/detail/${id}`);
   }
 
   return (
     <>
       <div className="carousel carousel-vertical rounded-box h-96">
- 
-   {carouse.map((item) => {
+        {carouse.map((item) => {
           return (
             <div className="carousel-item h-full" onClick={click}>
-              <img
-                src={item.thumbnail}
-                className="rounded-box"
-                
-              />
+              <img src={item.thumbnail} className="rounded-box" />
             </div>
           );
         })}
-</div>
+      </div>
     </>
   );
 };

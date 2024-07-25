@@ -8,11 +8,9 @@ const firebaseConfig = {
   storageBucket: "react-ecommerce-app-detail.appspot.com",
   messagingSenderId: "950142404283",
   appId: "1:950142404283:web:2b8f6596270433da8b8b9e",
-  measurementId: "G-Y8P0YE4ZPJ"
+  measurementId: "G-Y8P0YE4ZPJ",
 };
-
 
 // Initialize Cloud Firestore and get a reference to the service
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-

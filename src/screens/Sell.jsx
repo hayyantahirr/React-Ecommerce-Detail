@@ -60,7 +60,7 @@ function Sell() {
     <>
       <form onSubmit={sellProduct}>
         <h1 className="text-center text-2xl mt-20">Sell a Product</h1>
-        
+
         {/* Image input */}
         <label className="inp input input-bordered flex items-center gap-2 w-1/2 mx-auto mt-7">
           <input type="file" className="grow cursor-pointer" ref={img} />
@@ -139,7 +139,7 @@ function Sell() {
             </svg>
           </button>
         </div>
-        
+
         {/* Navigation link (if needed) */}
         <div className="flex justify-center">
           <Link to="/somepage" className="text-blue-500 underline">

@@ -17,14 +17,18 @@ const Login = () => {
   function signInUser(event) {
     event.preventDefault();
 
-    signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+    signInWithEmailAndPassword(
+      auth,
+      email.current.value,
+      password.current.value
+    )
       .then((userCredential) => {
-        // Signed in 
-        navigate('/home'); // Navigate to home page after successful sign-in
+        // Signed in
+        navigate("/home"); // Navigate to home page after successful sign-in
       })
       .catch((error) => {
         // Handle sign-in error
-        setError('Oh No! Looks like the password is wrong!!');
+        setError("Oh No! Looks like the password is wrong!!");
       });
 
     // Logging the input values for debugging
@@ -95,9 +99,11 @@ const Login = () => {
           </svg>
         </button>
       </div>
-<Link to="/"><h1 className="alreadylogin text-center mt-8">
-        Don't Have an Account?
-      </h1></Link>
+      <Link to="/">
+        <h1 className="alreadylogin text-center mt-8">
+          Don't Have an Account?
+        </h1>
+      </Link>
       <h1 className="text-center mt-8">{error}</h1>
     </form>
   );

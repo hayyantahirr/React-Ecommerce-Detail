@@ -107,9 +107,7 @@ const Detail = () => {
             </button>
           </div>
           {/* Example of a navigation link */}
-          <div className="flex justify-center mt-4">
-           
-          </div>
+          <div className="flex justify-center mt-4"></div>
         </div>
       ) : (
         // Display loading spinner if product data is not available

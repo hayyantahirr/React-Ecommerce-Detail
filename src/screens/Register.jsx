@@ -21,7 +21,11 @@ const Register = () => {
     event.preventDefault();
 
     // Register user with email and password
-    createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+    createUserWithEmailAndPassword(
+      auth,
+      email.current.value,
+      password.current.value
+    )
       .then(async (userCredential) => {
         // User successfully registered
         const user = userCredential.user;
@@ -120,7 +124,7 @@ const Register = () => {
             </svg>
           </button>
         </div>
-        <Link to='/login'>
+        <Link to="/login">
           <h1 className="alreadylogin text-center mt-8">
             Already Have an Account?
           </h1>

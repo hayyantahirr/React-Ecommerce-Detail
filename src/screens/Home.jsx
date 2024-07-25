@@ -65,9 +65,10 @@ const Home = () => {
     <>
       {/* Welcome message displaying user's email */}
       <h1 className="text-2xl text-left ml-5">
-        Welcome <span className="text-xl font-bold italic">{users?.email}</span>,
+        Welcome <span className="text-xl font-bold italic">{users?.email}</span>
+        ,
       </h1>
-      
+
       {/* Displaying fetched products in a card format */}
       <div className="flex gap-3 flex-wrap justify-center mb-5">
         {product ? (
