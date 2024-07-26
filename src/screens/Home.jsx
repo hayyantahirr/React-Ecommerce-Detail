@@ -70,7 +70,7 @@ const Home = () => {
       </h1>
 
       {/* Displaying fetched products in a card format */}
-      <div className="flex gap-3 flex-wrap justify-center mb-5">
+      <div className="flex gap-3 flex-wrap justify-center mb-5 items-center">
         {product ? (
           product.map((item) => {
             console.log(item);

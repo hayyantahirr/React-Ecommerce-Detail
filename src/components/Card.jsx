@@ -8,7 +8,7 @@ const Card = ({ title, img, desc, id }) => {
       {/* Card layout with image, title, description, and link */}
       <div className="card bg-base-100 w-96 shadow-xl">
         <figure className="px-10 pt-10">
-          <img src={img} alt="Product" className="rounded-xl h-3/5" />
+          <img src={img} alt="Product" className="rounded-xl h-[210px]" />
         </figure>
         <div className="card-body items-center text-center">
           <h2 className="card-title">{title}</h2>

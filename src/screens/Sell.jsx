@@ -140,12 +140,7 @@ function Sell() {
           </button>
         </div>
 
-        {/* Navigation link (if needed) */}
-        <div className="flex justify-center">
-          <Link to="/somepage" className="text-blue-500 underline">
-            Go to some page
-          </Link>
-        </div>
+        
       </form>
     </>
   );
