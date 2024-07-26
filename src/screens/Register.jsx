@@ -11,7 +11,7 @@ const Register = () => {
   const password = useRef(); // Reference to password input field
   const name = useRef(); // Reference to name input field
   const age = useRef(); // Reference to age input field
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //Navigation to login page 
   const [error, setError] = useState(); // State to store any errors
 
   // Firebase authentication instance
@@ -38,7 +38,7 @@ const Register = () => {
             age: age.current.value,
             email: email.current.value,
           });
-          navigate("/login");
+          navigate("/login");// navigation for login page 
           console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);
