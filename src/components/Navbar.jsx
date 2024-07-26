@@ -32,7 +32,7 @@ const Navbar = () => {
     document.querySelector("html").setAttribute("data-theme", localTheme);
   }, [theme]);
 
-  // Listen for authentication state changes
+  // Listener for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -70,7 +70,7 @@ const Navbar = () => {
             alt="Universal Mart Logo"
             width="70px"
           />
-          <Link to="/" className="btn btn-ghost text-xl">
+          <Link to="/home" className="btn btn-ghost text-xl">
             Universal Mart
           </Link>
         </div>
