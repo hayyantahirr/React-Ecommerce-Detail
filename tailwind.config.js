@@ -9,7 +9,7 @@ export default {
     themes: [
       {
         synthwave: {
-          ...require("daisyui/src/theming/themes")["synthwave"],
+          ...require("daisyui/src/theming/themes")["night"],
           "*": {
             color: "white",
           },

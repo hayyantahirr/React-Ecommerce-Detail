@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom"; // Use Link for navigation
+import { Link, useNavigate } from "react-router-dom"; // Use Link for navigation
 import { collection, addDoc } from "firebase/firestore";
 import { app, db } from "../config/firebase/firebaseconfig";
 import "../Styles/register.css"; // Register page styles
@@ -11,6 +11,7 @@ const Register = () => {
   const password = useRef(); // Reference to password input field
   const name = useRef(); // Reference to name input field
   const age = useRef(); // Reference to age input field
+  const navigate = useNavigate();
   const [error, setError] = useState(); // State to store any errors
 
   // Firebase authentication instance
@@ -37,6 +38,7 @@ const Register = () => {
             age: age.current.value,
             email: email.current.value,
           });
+          navigate("/login");
           console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);

@@ -139,8 +139,6 @@ function Sell() {
             </svg>
           </button>
         </div>
-
-        
       </form>
     </>
   );
