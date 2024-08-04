@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom"; // Import Link for other navigation if needed
+import { useNavigate, useParams} from "react-router-dom"; // Import Link for other navigation if needed
 import "../Styles/universal.css";
 import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc from Firestore
 import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
@@ -58,9 +58,9 @@ const Detail = () => {
             <img
               src={product.img}
               alt={product.title}
-              className="w-1/5 border rounded-3xl"
+              className="w-1/5 border rounded-3xl "
             />
-            <div className="border text-center w-1/2 rounded-3xl">
+            <div className="border text-center w-1/2 rounded-3xl ">
               <h1 className="mt-5 text-2xl ">{product.title}</h1>
               <div>
                 <h1 className="text-xl ">
