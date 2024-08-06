@@ -63,6 +63,7 @@ const Home = () => {
 
   return (
     <>
+    
       {/* Welcome message displaying user's email */}
       <h1 className="text-2xl text-left ml-5">
         Welcome <span className="text-xl font-bold italic">{users?.email}</span>
@@ -75,7 +76,7 @@ const Home = () => {
           product.map((item) => {
             console.log(item);
             return (
-              <Link to={`/product/${item.id}`} key={item.id}>
+              
                 <Card
                   title={item.title} // Add key prop to each Card component
                   desc={item.description.slice(0, 50)} // Slice description to show only first 50 characters
@@ -85,13 +86,14 @@ const Home = () => {
                   category={item.category}
                   brand={item.brand}
                 />
-              </Link>
+             
             );
           })
         ) : (
           <span className="loading loading-dots loading-lg"></span>
         )}
       </div>
+     
     </>
   );
 };

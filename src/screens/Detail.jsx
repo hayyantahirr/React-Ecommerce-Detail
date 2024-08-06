@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams} from "react-router-dom"; // Import Link for other navigation if needed
+import { useNavigate, useParams } from "react-router-dom"; // Import Link for other navigation if needed
 import "../Styles/universal.css";
 import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc from Firestore
 import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../config/Redux/cartSlice";
 
 const Detail = () => {
   const param = useParams(); // Hook to get URL parameters
   const navigate = useNavigate(); // Hook to navigate programmatically
   const [product, setProduct] = useState(null); // State to hold the product data
   const [loading, setLoading] = useState(true); // State to manage loading status
-
+  const dispatch = useDispatch();
+  const cart =useSelector((state)=>state)
+  console.log("Cart Item ====>",cart);
   // Function to navigate back to the previous page
   function back() {
     navigate(-1); // Go back to the previous page
@@ -84,6 +88,35 @@ const Detail = () => {
                 <div className="w-1/3 mx-auto mt-4 mb-5">
                   <h1 className="text-wrap">{product.description}</h1>
                 </div>
+                <div className="w-1/3 mx-auto mt-4 mb-5">
+                  <button
+                    className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-sky-800 p-2 flex justify-center items-center font-bold"
+                    onClick={() => dispatch(addToCart(product))}
+                  >
+                    <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-40 h-40 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-900"></div>
+                    <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
+                    <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
+                    <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
+                    <p className="z-10 ">
+                      <span className="flex AddToCart items-center">
+                        {" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          className="size-5 mr-3"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M6 5v1H4.667a1.75 1.75 0 0 0-1.743 1.598l-.826 9.5A1.75 1.75 0 0 0 3.84 19H16.16a1.75 1.75 0 0 0 1.743-1.902l-.826-9.5A1.75 1.75 0 0 0 15.333 6H14V5a4 4 0 0 0-8 0Zm4-2.5A2.5 2.5 0 0 0 7.5 5v1h5V5A2.5 2.5 0 0 0 10 2.5ZM7.5 10a2.5 2.5 0 0 0 5 0V8.75a.75.75 0 0 1 1.5 0V10a4 4 0 0 1-8 0V8.75a.75.75 0 0 1 1.5 0V10Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Add to cart
+                      </span>
+                    </p>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -107,7 +140,6 @@ const Detail = () => {
             </button>
           </div>
           {/* Example of a navigation link */}
-          <div className="flex justify-center mt-4"></div>
         </div>
       ) : (
         // Display loading spinner if product data is not available

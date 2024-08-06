@@ -16,6 +16,7 @@ export default {
           input: {
             color: "black",
           },
+          
         },
       },
       {
@@ -26,6 +27,11 @@ export default {
           },
           input: {
             color: "black",
+          },
+          ".AddToCart": {
+            // Corrected this part to ensure valid JavaScript object notation
+
+            color: "white",
           },
         },
       },
