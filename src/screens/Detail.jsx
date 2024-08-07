@@ -12,8 +12,8 @@ const Detail = () => {
   const [product, setProduct] = useState(null); // State to hold the product data
   const [loading, setLoading] = useState(true); // State to manage loading status
   const dispatch = useDispatch();
-  const cart =useSelector((state)=>state)
-  console.log("Cart Item ====>",cart);
+  const cart = useSelector((state) => state);
+  console.log("Cart Item ====>", cart);
   // Function to navigate back to the previous page
   function back() {
     navigate(-1); // Go back to the previous page

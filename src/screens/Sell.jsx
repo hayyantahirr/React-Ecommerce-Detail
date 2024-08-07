@@ -41,7 +41,6 @@ function Sell() {
         brand: brand.current.value,
         category: category.current.value,
         description: description.current.value,
-        quantity: 1,
       });
       console.log("Product added successfully");
       navigate(-1); // Navigate back after successful submission
