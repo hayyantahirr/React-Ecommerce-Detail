@@ -261,3 +261,48 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+// ### Explanation of the Code:
+// 1. **Firebase and React Imports:**
+//    - `getAuth`, `onAuthStateChanged`, `signOut`: Firebase functions to manage authentication.
+//    - `React`, `useEffect`, `useState`: Core React library and hooks.
+//    - `useNavigate`, `useLocation`, `Link`: React Router hooks for navigation and routing.
+//    - `app`: Your Firebase configuration.
+//    - `universal.css`: Your global CSS styles.
+
+// 2. **Redux Imports:**
+//    - `useDispatch`, `useSelector`: Hooks to interact with the Redux store.
+//    - `decrement`, `increment`, `removeFromCart`: Redux actions for managing the cart.
+
+// 3. **Component States:**
+//    - `user`: Stores the currently authenticated user.
+//    - `error`: Stores any error messages.
+//    - `theme`: Manages the theme of the application, either "emerald" or "synthwave".
+
+// 4. **handleToggle Function:**
+//    - Toggles the theme between light ("emerald") and dark ("synthwave").
+//    - Updates the `theme` state and saves the selected theme in `localStorage`.
+
+// 5. **useEffect for Theme Management:**
+//    - On mount and whenever the theme changes, this hook updates the `data-theme` attribute of the HTML element to match the selected theme.
+
+// 6. **useEffect for Authentication:**
+//    - This hook listens for changes in the authentication state (whether a user is logged in or not) and updates the `user` state accordingly.
+//    - `onAuthStateChanged` is used to set up this listener.
+
+// 7. **logOutUser Function:**
+//    - Signs out the user using `signOut`.
+//    - Navigates back to the home page after logout.
+//    - If an error occurs during logout, the `error` state is updated.
+
+// 8. **hideButtons Variable:**
+//    - Determines if certain buttons should be hidden based on the current route. For instance, buttons are hidden on the login, home, and sell pages.
+
+// 9. **Navbar Render:**
+//    - The component returns JSX that defines the navigation bar.
+//    - Includes a logo, navigation links, a cart button with a dropdown showing cart items, a theme toggle switch, and a dropdown menu for logging out.
+//    - Buttons and elements are conditionally rendered based on the user's authentication status and the current route.
+
+// This should give you a good understanding of how each part of your code works and how the component behaves under different conditions. Let me know if you have any more questions!
