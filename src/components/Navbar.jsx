@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react"; // React and hooks
 import { useNavigate, useLocation, Link } from "react-router-dom"; // React Router hooks
 import { app } from "../config/firebase/firebaseconfig"; // Firebase configuration
 import "../Styles/universal.css"; // Universal CSS
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Redux hooks
 import {
   decrement,
   increment,
   removeFromCart,
-} from "../config/Redux/cartSlice";
+} from "../config/Redux/cartSlice"; // Redux actions for cart management
 
 const Navbar = () => {
   const auth = getAuth(app); // Initialize Firebase authentication
   const navigate = useNavigate(); // Hook for navigation
   const location = useLocation(); // Hook for getting the current location
-  const cartItem = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const cartItem = useSelector((state) => state); // Get cart items from Redux state
+  const dispatch = useDispatch(); // Redux dispatch function
   const [user, setUser] = useState(null); // State to store the current user
   const [error, setError] = useState(null); // State to store any errors
   const [theme, setTheme] = useState(
@@ -33,32 +33,31 @@ const Navbar = () => {
 
   // Set theme in localStorage on mount and update localStorage on theme change
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    const localTheme = localStorage.getItem("theme");
-    // Add custom data-theme attribute to html tag required to update theme using DaisyUI
-    document.querySelector("html").setAttribute("data-theme", localTheme);
+    localStorage.setItem("theme", theme); // Store theme in localStorage
+    const localTheme = localStorage.getItem("theme"); // Get theme from localStorage
+    document.querySelector("html").setAttribute("data-theme", localTheme); // Set data-theme attribute for DaisyUI
   }, [theme]);
 
   // Listener for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
+        setUser(user); // Set user state if authenticated
       } else {
-        setUser(null);
+        setUser(null); // Set user state to null if not authenticated
       }
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Clean up the listener on unmount
   }, [auth]);
 
   // Function to log out the user
   const logOutUser = async () => {
     try {
-      await signOut(auth);
+      await signOut(auth); // Sign out user
       navigate("/"); // Navigate to home page after logging out
     } catch (error) {
-      setError("Oops! Looks like a problem occurred");
+      setError("Oops! Looks like a problem occurred"); // Set error message
     }
   };
 
@@ -82,7 +81,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex-none flex items-center gap-2">
-          {/* This code is for add to cart button */}
+          {/* Add to cart button */}
           <div className="form-control flex flex-row items-center">
             <div className="dropdown dropdown-end">
               <div
