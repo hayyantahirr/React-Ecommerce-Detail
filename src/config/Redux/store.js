@@ -9,7 +9,7 @@ const persistConfig = {
   storage, // We're telling the drawer to use localStorage to save our things.
 };
 
-const persistedReducer = persistReducer(persistConfig, cartReducer); // We're wrapping our cart in a special blanket (persistReducer) so that it stays safe and remembered in the drawer (localStorage).
+const persistedReducer = persistReducer(persistConfig, cartReducer); // We're wrapping our cart in a special blanket (persistReducer) so that it stays safe and remembered in the drawer (localStorage). <===== This is the point in which we are saving our data in the localStorage.
 
 const store = configureStore({
   reducer: { persistedReducer }, // We're creating our big box (store) and putting the wrapped cart inside it.
@@ -42,4 +42,4 @@ export { store, persistor }; // Finally, we're sharing our big box (store) and h
 // ### Conclusion
 
 // This code is all about creating a place to store important information (like toys in a toy box) and making sure it stays safe and remembered, even if we close the app or refresh the page. 
-// The combination of `configureStore`, `persistReducer`, and `persistStore` ensures that the information is never lost.Let's go through your code step by step. I'll add comments to make it more readable and explain each part as if I'm explaining to a 5-year-old.
+// The combination of `configureStore`, `persistReducer`, and `persistStore` ensures that the information is never lost.Let's go through your code step by step.
