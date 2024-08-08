@@ -8,12 +8,12 @@ import { PersistGate } from "redux-persist/integration/react";
 function Layout() {
   return (
     <>
-    <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <Navbar />
-      <Outlet />
-      <Footer />
-      </PersistGate>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Navbar />
+          <Outlet />
+          <Footer />
+        </PersistGate>
       </Provider>
     </>
   );
