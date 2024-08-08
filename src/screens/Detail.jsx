@@ -1,50 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Import Link for other navigation if needed
-import "../Styles/universal.css";
-import { doc, getDoc } from "firebase/firestore"; // Import doc and getDoc from Firestore
+import React, { useEffect, useState } from "react"; // Import React and hooks
+import { useNavigate, useParams } from "react-router-dom"; // Import hooks for navigation and URL parameters
+import "../Styles/universal.css"; // Import universal CSS styles
+import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions to retrieve a document
 import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../config/Redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
+import { addToCart } from "../config/Redux/cartSlice"; // Import Redux action to add items to the cart
 
 const Detail = () => {
-  const param = useParams(); // Hook to get URL parameters
-  const navigate = useNavigate(); // Hook to navigate programmatically
-  const [product, setProduct] = useState(null); // State to hold the product data
-  const [loading, setLoading] = useState(true); // State to manage loading status
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state);
-  console.log("Cart Item ====>", cart);
+  const param = useParams(); // Get the URL parameters, specifically the product ID
+  const navigate = useNavigate(); // Hook for programmatically navigating between routes
+  const [product, setProduct] = useState(null); // State to hold the fetched product data
+  const [loading, setLoading] = useState(true); // State to manage the loading state
+  const dispatch = useDispatch(); // Hook to dispatch Redux actions
+  const cart = useSelector((state) => state); // Access the Redux state (cart information)
+
   // Function to navigate back to the previous page
   function back() {
-    navigate(-1); // Go back to the previous page
+    navigate(-1); // Navigate back to the previous page
   }
 
-  // Function to fetch product data based on the document ID from Firestore
+  // Function to fetch product data from Firestore using the product ID from the URL
   async function getDataThroughId() {
-    const docRef = doc(db, "product", param.id); // Reference to the specific document
+    const docRef = doc(db, "product", param.id); // Reference to the specific product document in Firestore
     try {
-      const docSnap = await getDoc(docRef); // Fetch the document snapshot
+      const docSnap = await getDoc(docRef); // Fetch the document snapshot from Firestore
       if (docSnap.exists()) {
-        const data = docSnap.data(); // Get the document data
-        data.id = docSnap.id; // Add the document ID to the data
-        setProduct(data); // Update the product state with the fetched data
-        console.log(data); // Log the data for debugging
+        const data = docSnap.data(); // Extract data from the document
+        data.id = docSnap.id; // Attach the document ID to the data object
+        setProduct(data); // Update the state with the fetched product data
+        console.log(data); // Log the fetched data for debugging
       } else {
-        console.log("No such document!"); // Log if no document is found
+        console.log("No such document!"); // Log a message if no document is found
       }
-      setLoading(false); // Set loading to false after fetching data
+      setLoading(false); // Set loading to false after data fetching is complete
     } catch (e) {
-      console.log(e); // Log any error that occurs
-      setLoading(false); // Set loading to false in case of error
+      console.log(e); // Log any errors that occur during data fetching
+      setLoading(false); // Set loading to false even if an error occurs
     }
   }
 
-  // useEffect hook to call getDataThroughId when the component mounts or param.id changes
+  // useEffect hook to fetch product data when the component mounts or when the product ID changes
   useEffect(() => {
     getDataThroughId();
   }, [param.id]);
 
-  // Display loading spinner while data is being fetched
+  // If the product data is still being fetched, show a loading spinner
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -56,7 +56,7 @@ const Detail = () => {
   return (
     <>
       {product ? (
-        // Display product details if product data is available
+        // Display the product details if the data is available
         <div className="mt-7 mb-8 ">
           <div className="flex justify-center gap-5">
             <img
@@ -89,6 +89,7 @@ const Detail = () => {
                   <h1 className="text-wrap">{product.description}</h1>
                 </div>
                 <div className="w-1/3 mx-auto mt-4 mb-5">
+                  {/* Button to add the product to the cart */}
                   <button
                     className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-sky-800 p-2 flex justify-center items-center font-bold"
                     onClick={() => dispatch(addToCart(product))}
@@ -121,6 +122,7 @@ const Detail = () => {
             </div>
           </div>
           <div className="flex justify-center mt-7">
+            {/* Button to navigate back to the previous page */}
             <button className="btn btn-outline btn-primary" onClick={back}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -139,10 +141,9 @@ const Detail = () => {
               Go Back to Home
             </button>
           </div>
-          {/* Example of a navigation link */}
         </div>
       ) : (
-        // Display loading spinner if product data is not available
+        // Show a loading spinner if the product data is not available
         <div className="flex items-center justify-center min-h-screen">
           <span className="loading loading-dots loading-lg"></span>
         </div>
@@ -152,3 +153,31 @@ const Detail = () => {
 };
 
 export default Detail;
+
+// ### Detailed Explanation
+
+// 1. **Imports**:
+//    - **React and Hooks**: `useEffect` and `useState` are used to manage side effects and state within the component.
+//    - **React Router**: `useNavigate` is used to navigate programmatically, and `useParams` fetches URL parameters.
+//    - **Firebase Firestore**: `doc` and `getDoc` are used to reference and retrieve documents from Firestore.
+//    - **Redux**: `useDispatch` and `useSelector` are used to interact with the Redux store.
+
+// 2. **State Management**:
+//    - **product**: Stores the fetched product data.
+//    - **loading**: Tracks whether the product data is still being fetched.
+
+// 3.
+
+//  **Functions**:
+//    - **back()**: Uses `navigate(-1)` to go back to the previous page.
+//    - **getDataThroughId()**: Fetches product data from Firestore based on the product ID in the URL. If the document exists, the data is stored in the `product` state. If not, it logs an error.
+
+// 4. **useEffect**:
+//    - Automatically calls `getDataThroughId` when the component mounts or when `param.id` changes.
+
+// 5. **Conditional Rendering**:
+//    - While loading, a spinner is shown.
+//    - Once the product data is loaded, it's displayed with various details (image, title, price, etc.). A button is provided to add the product to the cart, which dispatches the `addToCart` action from Redux.
+//    - A "Go Back to Home" button allows navigation back to the previous page.
+
+// This code structure ensures that the product data is fetched and displayed correctly, and it provides a clear way to interact with the Redux store and navigate within the app.
