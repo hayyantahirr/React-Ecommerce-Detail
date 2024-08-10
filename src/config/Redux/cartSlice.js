@@ -53,7 +53,8 @@ export const cartSlice = createSlice({
         state.cart[index].quantity -= 1;
       } else if (index !== -1 && state.cart[index].quantity === 1) {
         // If the item quantity is 1 and we want to decrement, remove the item from the cart
-        state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+        state.cart.splice(index, 1);
+        
       }
     },
     // Reducer function to handle removing an item entirely from the cart
