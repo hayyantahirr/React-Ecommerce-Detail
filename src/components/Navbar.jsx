@@ -105,7 +105,10 @@ const Navbar = () => {
                     />
                   </svg>
                   <span className="badge badge-sm indicator-item">
-                    {cartItem.persistedReducer.cart.length}
+                    {cartItem.persistedReducer.cart.reduce(
+                      (total, item) => total + item.quantity,
+                      0
+                    )}
                   </span>
                 </div>
               </div>
@@ -115,7 +118,11 @@ const Navbar = () => {
               >
                 <div className="card-body">
                   <span className="text-lg font-bold">
-                    Items : {cartItem.persistedReducer.cart.length}
+                    Items :{" "}
+                    {cartItem.persistedReducer.cart.reduce(
+                      (total, item) => total + item.quantity,
+                      0
+                    )}
                   </span>
                   <span className="text-info items-center ">
                     {cartItem.persistedReducer.cart.map((item) => (
@@ -261,8 +268,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
 
 // ### Explanation of the Code:
 // 1. **Firebase and React Imports:**
