@@ -1,73 +1,72 @@
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"; // We use these tools to help users log in, stay logged in, and log out.
-import React, { useEffect, useState } from "react"; // React helps us build our website, and these special tools (called hooks) let us do cool things.
-import { useNavigate, useLocation, Link } from "react-router-dom"; // These tools help us move around our website and know where we are.
-import { app } from "../config/firebase/firebaseconfig"; // This is where our app's Firebase setup is stored.
-import "../Styles/universal.css"; // This file has the styles (like colors and fonts) we use on our website.
-import { useDispatch, useSelector } from "react-redux"; // These tools let us manage the cart, which holds the items users want to buy.
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"; // Firebase authentication functions
+import React, { useEffect, useState } from "react"; // React and hooks
+import { useNavigate, useLocation, Link } from "react-router-dom"; // React Router hooks
+import { app } from "../config/firebase/firebaseconfig"; // Firebase configuration
+import "../Styles/universal.css"; // Universal CSS
+import { useDispatch, useSelector } from "react-redux"; // Redux hooks
 import {
   decrement,
   increment,
   removeFromCart,
-} from "../config/Redux/cartSlice"; // These actions help us add or remove items from the cart.
+} from "../config/Redux/cartSlice"; // Redux actions for cart management
 
 const Navbar = () => {
-  const auth = getAuth(app); // This helps us handle user login and logout.
-  const navigate = useNavigate(); // This helps us move to different pages on our website.
-  const location = useLocation(); // This helps us know which page we're on.
-  const cartItem = useSelector((state) => state); // This gets the items in the user's shopping cart.
-  const dispatch = useDispatch(); // This lets us tell the cart what to do (like add or remove items).
-  const [user, setUser] = useState(null); // We keep track of who is logged in.
-  const [error, setError] = useState(null); // We keep track of any problems or mistakes that happen.
+  const auth = getAuth(app); // Initialize Firebase authentication
+  const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation(); // Hook for getting the current location
+  const cartItem = useSelector((state) => state); // Get cart items from Redux state
+  const dispatch = useDispatch(); // Redux dispatch function
+  const [user, setUser] = useState(null); // State to store the current user
+  const [error, setError] = useState(null); // State to store any errors
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "emerald"
-  ); // We keep track of the website's theme (like colors) and store it.
+  ); // State to store the theme, default to "emerald"
 
-  // This function lets the user switch between light and dark mode.
+  // Function to toggle between dark and light theme
   const handleToggle = (e) => {
     if (e.target.checked) {
-      setTheme("synthwave"); // If the user wants dark mode, we use "synthwave."
+      setTheme("synthwave");
     } else {
-      setTheme("emerald"); // If the user wants light mode, we use "emerald."
+      setTheme("emerald");
     }
   };
 
-  // This makes sure the theme stays the same when the user comes back to the website.
+  // Set theme in localStorage on mount and update localStorage on theme change
   useEffect(() => {
-    localStorage.setItem("theme", theme); // We save the chosen theme.
-    const localTheme = localStorage.getItem("theme"); // We get the saved theme.
-    document.querySelector("html").setAttribute("data-theme", localTheme); // We apply the theme to the whole website.
-  }, [theme]); // This runs whenever the theme changes.
+    localStorage.setItem("theme", theme); // Store theme in localStorage
+    const localTheme = localStorage.getItem("theme"); // Get theme from localStorage
+    document.querySelector("html").setAttribute("data-theme", localTheme); // Set data-theme attribute for DaisyUI
+  }, [theme]);
 
-  // This keeps track of whether someone is logged in or not.
+  // Listener for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user); // If someone is logged in, we save their information.
+        setUser(user); // Set user state if authenticated
       } else {
-        setUser(null); // If no one is logged in, we reset to show that.
+        setUser(null); // Set user state to null if not authenticated
       }
     });
 
-    return () => unsubscribe(); // This stops tracking when the user leaves the page.
-  }, [auth]); // This runs whenever the `auth` changes.
+    return () => unsubscribe(); // Clean up the listener on unmount
+  }, [auth]);
 
-  // This function logs out the user.
+  // Function to log out the user
   const logOutUser = async () => {
     try {
-      await signOut(auth); // We log the user out.
-      navigate("/"); // After logging out, we take the user back to the home page.
+      await signOut(auth); // Sign out user
+      navigate("/"); // Navigate to home page after logging out
     } catch (error) {
-      setError("Oops! Looks like a problem occurred"); // If something goes wrong, we show an error message.
+      setError("Oops! Looks like a problem occurred"); // Set error message
     }
   };
 
-  // We decide if we should hide certain buttons based on the page the user is on.
+  // Hide buttons on specific pages
   const hideButtons =
     location.pathname === "/login" ||
     location.pathname === "/" ||
     location.pathname === "/sell";
 
-  // This is what shows up on the screen for our navigation bar.
   return (
     <>
       <div className="navbar bg-base-100">
@@ -82,7 +81,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex-none flex items-center gap-2">
-          {/* The shopping cart button */}
+          {/* Add to cart button */}
           <div className="form-control flex flex-row items-center">
             <div className="dropdown dropdown-end">
               <div
@@ -119,7 +118,11 @@ const Navbar = () => {
               >
                 <div className="card-body">
                   <span className="text-lg font-bold">
-                    Items : {cartItem.persistedReducer.cart.length}
+                    Items :{" "}
+                    {cartItem.persistedReducer.cart.reduce(
+                      (total, item) => total + item.quantity,
+                      0
+                    )}
                   </span>
                   <span className="text-info items-center ">
                     {cartItem.persistedReducer.cart.map((item) => (
@@ -165,9 +168,7 @@ const Navbar = () => {
                             >
                               <path
                                 fillRule="evenodd"
-                                d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.
-
-5Zm3.34-.81a.75.75 0 0 1 .69.81l-.3 7.5a.75.75 0 1 1-1.5-.06l.3-7.5a.75.75 0 0 1 .81-.69ZM7.5 16.5a.75.75 0 0 1-.75.75h-.154a1.25 1.25 0 0 1-1.247-1.15l-.74-9.252a43.564 43.564 0 0 0 3.131-.314l.346 8.655Zm6.145.6a1.25 1.25 0 0 1-1.246 1.15H11a.75.75 0 0 1-.75-.75l.348-8.654a43.662 43.662 0 0 0 3.13.313l-.741 9.252Z"
+                                d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
                                 clipRule="evenodd"
                               />
                             </svg>
@@ -176,66 +177,90 @@ const Navbar = () => {
                       </div>
                     ))}
                   </span>
-                  <div className="card-actions">
-                    <button
-                      onClick={() => navigate("/checkout")}
-                      className="btn btn-primary btn-block"
-                    >
-                      Checkout
-                    </button>
-                  </div>
+                  <span className="text-info">
+                    Subtotal:$
+                    {cartItem.persistedReducer.cart.reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+
+                  <div className="card-actions"></div>
                 </div>
               </div>
             </div>
+            {user && !hideButtons && (
+              <Link
+                to="/sell"
+                className="btn btn-outline btn-info w-[120px] p-0 ml-5"
+              >
+                Sell Product
+              </Link>
+            )}
           </div>
-          {/* The dark mode toggle */}
+          {error && <h1 className="text-center text-red-500">{error}</h1>}
+
+          {/* Day and Night mode toggle */}
           <label className="swap swap-rotate">
             <input
               type="checkbox"
+              className="theme-controller"
               onChange={handleToggle}
-              checked={theme === "synthwave"}
+              checked={theme === "emerald" ? false : true}
+              value="synthwave"
             />
-
             {/* Sun icon */}
             <svg
-              className="swap-on fill-current w-10 h-10"
+              className="swap-off h-10 w-10 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
-              <path d="M5.64 17.657l-1.414 1.414-1.414-1.414 1.414-1.414 1.414 1.414zm12.728 0l1.414 1.414 1.414-1.414-1.414-1.414-1.414 1.414zm1.415-6.415h2v2h-2v-2zm-16 0H2v2h2v-2zm7-7h2v2h-2V4zm0 16h2v2h-2v-2zm7.071-14.071l1.414 1.414-1.414 1.414-1.414-1.414 1.414-1.414zM5.636 5.636l-1.414 1.414L2.808 5.636l1.414-1.414 1.414 1.414zm6.364 2.828a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+              <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
             </svg>
 
             {/* Moon icon */}
             <svg
-              className="swap-off fill-current w-10 h-10"
+              className="swap-on h-10 w-10 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
-              <path d="M21.707 13.05a1 1 0 0 0-1.076-.252 7.947 7.947 0 0 1-2.89.527 8 8 0 1 1-8-8 7.947 7.947 0 0 1 .527-2.89 1 1 0 0 0-.252-1.076A1.004 1.004 0 0 0 10 1a10 10 0 1 0 10 10c0-.416-.017-.833-.051-1.25a1 1 0 0 0-.242-.7z" />
+              <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
             </svg>
           </label>
-          {/* Conditional rendering of buttons based on the page */}
-          {!hideButtons && (
-            <>
-              {!user ? (
-                <Link to="/login" className="btn btn-primary">
-                  Login
-                </Link>
-              ) : (
-                <>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => logOutUser()}
-                  >
-                    Logout
-                  </button>
-                </>
-              )}
-              <Link to="/sell" className="btn btn-accent">
-                Sell
-              </Link>
-            </>
-          )}
+
+          {/* Dropdown menu */}
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-square"
+            >
+              <div className="btn btn-square btn-ghost">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="inline-block h-5 w-5 stroke-current"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
+              <li>
+                {user && !hideButtons && <a onClick={logOutUser}>Logout</a>}
+                {error && <h1 className="text-center text-red-500">{error}</h1>}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </>
@@ -244,11 +269,45 @@ const Navbar = () => {
 
 export default Navbar;
 
-// In this version, I've reorganized the code, improved some comments, and made sure that everything is clear and easy to follow. The `Navbar` component now includes:
+// ### Explanation of the Code:
+// 1. **Firebase and React Imports:**
+//    - `getAuth`, `onAuthStateChanged`, `signOut`: Firebase functions to manage authentication.
+//    - `React`, `useEffect`, `useState`: Core React library and hooks.
+//    - `useNavigate`, `useLocation`, `Link`: React Router hooks for navigation and routing.
+//    - `app`: Your Firebase configuration.
+//    - `universal.css`: Your global CSS styles.
 
-// 1. **Authentication and Navigation**: It manages the user's authentication state, handles sign-out, and controls navigation using React Router's hooks.
-// 2. **Theme Management**: It allows users to toggle between the `emerald` and `synthwave` themes, saving the selected theme in `localStorage`.
-// 3. **Cart Interaction**: It displays the user's cart items and allows for item increment, decrement, and removal, integrating with Redux for state management.
-// 4. **Conditional Button Rendering**: It hides certain buttons based on the current route to enhance the user experience.
+// 2. **Redux Imports:**
+//    - `useDispatch`, `useSelector`: Hooks to interact with the Redux store.
+//    - `decrement`, `increment`, `removeFromCart`: Redux actions for managing the cart.
 
-// This should provide a clear, maintainable, and efficient implementation of the `Navbar` component for your React project.
+// 3. **Component States:**
+//    - `user`: Stores the currently authenticated user.
+//    - `error`: Stores any error messages.
+//    - `theme`: Manages the theme of the application, either "emerald" or "synthwave".
+
+// 4. **handleToggle Function:**
+//    - Toggles the theme between light ("emerald") and dark ("synthwave").
+//    - Updates the `theme` state and saves the selected theme in `localStorage`.
+
+// 5. **useEffect for Theme Management:**
+//    - On mount and whenever the theme changes, this hook updates the `data-theme` attribute of the HTML element to match the selected theme.
+
+// 6. **useEffect for Authentication:**
+//    - This hook listens for changes in the authentication state (whether a user is logged in or not) and updates the `user` state accordingly.
+//    - `onAuthStateChanged` is used to set up this listener.
+
+// 7. **logOutUser Function:**
+//    - Signs out the user using `signOut`.
+//    - Navigates back to the home page after logout.
+//    - If an error occurs during logout, the `error` state is updated.
+
+// 8. **hideButtons Variable:**
+//    - Determines if certain buttons should be hidden based on the current route. For instance, buttons are hidden on the login, home, and sell pages.
+
+// 9. **Navbar Render:**
+//    - The component returns JSX that defines the navigation bar.
+//    - Includes a logo, navigation links, a cart button with a dropdown showing cart items, a theme toggle switch, and a dropdown menu for logging out.
+//    - Buttons and elements are conditionally rendered based on the user's authentication status and the current route.
+
+// This should give you a good understanding of how each part of your code works and how the component behaves under different conditions. Let me know if you have any more questions!
