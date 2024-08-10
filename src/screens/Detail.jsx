@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"; // Import hooks for n
 import "../Styles/universal.css"; // Import universal CSS styles
 import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions to retrieve a document
 import { db } from "../config/firebase/firebaseconfig"; // Import Firestore database configuration
-import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
+import { useDispatch} from "react-redux"; // Import Redux hooks
 import { addToCart } from "../config/Redux/cartSlice"; // Import Redux action to add items to the cart
 
 const Detail = () => {
