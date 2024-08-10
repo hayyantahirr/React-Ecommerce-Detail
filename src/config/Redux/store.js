@@ -1,9 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit"; // We're bringing in a special tool that helps us create a big box (store) to keep all our important things (state) together.
 import persistReducer from "redux-persist/es/persistReducer"; // This is a helper that will make sure our big box remembers everything, even when we close the app.
 import storage from "redux-persist/lib/storage"; // This is like a drawer where we keep the memories of our big box (it usually uses localStorage on the computer).
-import cartReducer from "./cartSlice"; // This is a special part of the box where we specifically keep our shopping cart items.
 import persistStore from "redux-persist/es/persistStore"; // This is another helper that works with the drawer to keep everything in place and safe.
-
+import cartReducer from "./cartSlice";
 const persistConfig = {
   key: "root", // We're naming our drawer's key as "root." This key is like the name on the drawer.
   storage, // We're telling the drawer to use localStorage to save our things.

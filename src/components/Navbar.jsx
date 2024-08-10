@@ -118,11 +118,7 @@ const Navbar = () => {
               >
                 <div className="card-body">
                   <span className="text-lg font-bold">
-                    Items :{" "}
-                    {cartItem.persistedReducer.cart.reduce(
-                      (total, item) => total + item.quantity,
-                      0
-                    )}
+                    Items : {cartItem.persistedReducer.cart.length}
                   </span>
                   <span className="text-info items-center ">
                     {cartItem.persistedReducer.cart.map((item) => (

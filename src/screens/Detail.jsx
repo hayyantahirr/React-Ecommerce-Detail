@@ -12,7 +12,6 @@ const Detail = () => {
   const [product, setProduct] = useState(null); // State to hold the fetched product data
   const [loading, setLoading] = useState(true); // State to manage the loading state
   const dispatch = useDispatch(); // Hook to dispatch Redux actions
-  const cart = useSelector((state) => state); // Access the Redux state (cart information)
 
   // Function to navigate back to the previous page
   function back() {
