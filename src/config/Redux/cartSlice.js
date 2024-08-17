@@ -53,7 +53,9 @@ export const cartSlice = createSlice({
         state.cart[index].quantity -= 1;
       } else if (index !== -1 && state.cart[index].quantity === 1) {
         // If the item quantity is 1 and we want to decrement, remove the item from the cart
+
         state.cart.splice(index, 1);
+        
         
       }
     },

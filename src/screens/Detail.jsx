@@ -57,50 +57,51 @@ const Detail = () => {
     <>
       {product ? (
         // We're showing the product details like the image, title, price, brand, and category.
-        <div className="mt-7 mb-8 ">
-          <div className="flex justify-center gap-5">
-            <img
-              src={product.img}
-              alt={product.title}
-              className="w-1/5 border rounded-3xl "
-            />
-            <div className="border text-center w-1/2 rounded-3xl ">
-              <h1 className="mt-5 text-2xl ">{product.title}</h1>
-              <div>
-                <h1 className="text-xl ">
+        <div className="mt-7 mb-8">
+          <div className="flex flex-col lg:flex-row flex-wrap justify-center gap-5">
+            <div className="w-full lg:w-1/5 flex justify-center">
+              <img
+                src={product.img}
+                alt={product.title}
+                className="w-4/5 lg:w-full border rounded-3xl"
+              />
+            </div>
+            <div className="w-full lg:w-1/2 border text-center rounded-3xl p-4">
+              <h1 className="mt-5 text-2xl">{product.title}</h1>
+              <div className="text-left lg:text-center">
+                <h1 className="text-xl">
                   Price:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.price}$
                   </span>
                 </h1>
-                <h1 className="text-xl ">
+                <h1 className="text-xl">
                   Brand:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.brand}
                   </span>
                 </h1>
-                <h1 className="text-xl ">
+                <h1 className="text-xl">
                   Category:{" "}
                   <span className="text-[#a6adad] text-base">
                     {product.category}
                   </span>
                 </h1>
-                <div className="w-1/3 mx-auto mt-4 mb-5">
+                <div className="mt-4 mb-5">
                   <h1 className="text-wrap">{product.description}</h1>
                 </div>
-                <div className="w-1/3 mx-auto mt-4 mb-5">
+                <div className="w-full lg:w-1/3 mx-auto mt-4 mb-5">
                   {/* This button adds the product to our cart. */}
                   <button
-                    className="relative group cursor-pointer text-sky-50  overflow-hidden h-16 w-64 rounded-md bg-sky-800 p-2 flex justify-center items-center font-bold"
+                    className="relative group cursor-pointer text-sky-50 overflow-hidden h-16 w-full lg:w-64 rounded-md bg-sky-800 p-2 flex justify-center items-center font-bold"
                     onClick={() => dispatch(addToCart(product))}
                   >
                     <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-40 h-40 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-900"></div>
                     <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
                     <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
                     <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
-                    <p className="z-10 ">
+                    <p className="z-10">
                       <span className="flex AddToCart items-center">
-                        {" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -145,17 +146,12 @@ const Detail = () => {
       ) : (
         // If there's no product details, we keep showing the loading spinner.
         <div className="flex items-center justify-center min-h-screen">
-          <span
-            className="loading
-
- loading-dots loading-lg"
-          ></span>
+          <span className="loading loading-dots loading-lg"></span>
         </div>
       )}
     </>
   );
-};
-
+}  
 export default Detail;
 
 // ### Simple Explanation:

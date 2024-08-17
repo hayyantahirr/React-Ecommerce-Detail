@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app, db } from "../config/firebase/firebaseconfig";
-import { Link } from "react-router-dom"; // Import Link for navigation
 import "../Styles/universal.css";
 import { collection, getDocs, query } from "firebase/firestore";
 

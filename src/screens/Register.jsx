@@ -38,7 +38,7 @@ const Register = () => {
             age: age.current.value,
             email: email.current.value,
           });
-          navigate("/login");// navigation for login page 
+          navigate("/");// navigation for login page 
           console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);
@@ -126,7 +126,7 @@ const Register = () => {
             </svg>
           </button>
         </div>
-        <Link to="/login">
+        <Link to="/">
           <h1 className="alreadylogin text-center mt-8">
             Already Have an Account?
           </h1>

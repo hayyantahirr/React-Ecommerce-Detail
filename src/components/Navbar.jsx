@@ -4,17 +4,14 @@ import { useNavigate, useLocation, Link } from "react-router-dom"; // React Rout
 import { app } from "../config/firebase/firebaseconfig"; // Firebase configuration
 import "../Styles/universal.css"; // Universal CSS
 import { useDispatch, useSelector } from "react-redux"; // Redux hooks
-import {
-  decrement,
-  increment,
-  removeFromCart,
-} from "../config/Redux/cartSlice"; // Redux actions for cart management
+import { decrement, increment, removeFromCart } from "../config/Redux/cartSlice"; // Redux actions for cart management
 
 const Navbar = () => {
   const auth = getAuth(app); // Initialize Firebase authentication
   const navigate = useNavigate(); // Hook for navigation
   const location = useLocation(); // Hook for getting the current location
   const cartItem = useSelector((state) => state); // Get cart items from Redux state
+
   const dispatch = useDispatch(); // Redux dispatch function
   const [user, setUser] = useState(null); // State to store the current user
   const [error, setError] = useState(null); // State to store any errors
@@ -82,122 +79,130 @@ const Navbar = () => {
         </div>
         <div className="flex-none flex items-center gap-2">
           {/* Add to cart button */}
-          <div className="form-control flex flex-row items-center">
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle"
-              >
-                <div className="indicator">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <span className="badge badge-sm indicator-item">
-                    {cartItem.persistedReducer.cart.reduce(
-                      (total, item) => total + item.quantity,
-                      0
-                    )}
-                  </span>
+          {user && !hideButtons && (
+            <div className="form-control flex flex-row items-center">
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle"
+                >
+                  <div className="indicator">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span className="badge badge-sm indicator-item">
+                      {cartItem.persistedReducer.cart.reduce(
+                        (total, item) => total + item.quantity,
+                        0
+                      )}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div
-                tabIndex={0}
-                className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-80 shadow"
-              >
-                <div className="card-body">
-                  <span className="text-lg font-bold">
-                    Items :{" "}
-                    {cartItem.persistedReducer.cart.reduce(
-                      (total, item) => total + item.quantity,
-                      0
-                    )}
-                  </span>
-                  <span className="text-info items-center ">
-                    {cartItem.persistedReducer.cart.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center gap-4 p-2 rounded mb-2"
-                        style={{ width: "100%" }}
-                      >
-                        <div className="w-10 h-10">
-                          <img
-                            src={item.img}
-                            alt={item.title}
-                            className="w-10 h-10 mask mask-squircle"
-                          />
-                        </div>
-                        <div className="flex-grow flex">
-                          <p className="truncate">{item.title}</p>{" "}
-                          <p className="truncate">${item.price}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            className="btn btn-primary btn-xs"
-                            onClick={() => dispatch(increment(item))}
-                          >
-                            +
-                          </button>
-                          <span>{item.quantity}</span>
-                          <button
-                            className="btn btn-secondary btn-xs"
-                            onClick={() => dispatch(decrement(item))}
-                          >
-                            -
-                          </button>
-                          <button
-                            className="btn btn-error btn-xs"
-                            onClick={() => dispatch(removeFromCart(item))}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className="size-5"
+                <div
+                  tabIndex={0}
+                  className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-80 shadow"
+                >
+                  <div className="card-body">
+                    <span className="text-lg font-bold">
+                      Items :{" "}
+                      {cartItem.persistedReducer.cart.reduce(
+                        (total, item) => total + item.quantity,
+                        0
+                      )}
+                    </span>
+                    <span className="text-info items-center ">
+                      {cartItem.persistedReducer.cart.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center gap-4 p-2 rounded mb-2"
+                          style={{ width: "100%" }}
+                        >
+                          <div className="w-10 h-10">
+                            <img
+                              src={item.img}
+                              alt={item.title}
+                              className="w-10 h-10 mask mask-squircle"
+                            />
+                          </div>
+                          <div className="flex-grow flex">
+                            <p className="truncate">{item.title}</p>{" "}
+                            <p className="truncate">${item.price}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              className="btn btn-primary btn-xs"
+                              onClick={() => {
+                                dispatch(increment(item));
+                              }}
                             >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </button>
+                              +
+                            </button>
+                            <span>{item.quantity}</span>
+                            {item.quantity > 1 ? (
+                              <button
+                                className="btn btn-secondary btn-xs"
+                                onClick={() => dispatch(decrement(item))}
+                              >
+                                -
+                              </button>
+                            ) : (
+                              <button
+                                className="btn btn-error btn-xs"
+                                onClick={() => dispatch(removeFromCart(item))}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  className="size-5"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </span>
-                  <span className="text-info">
-                    Subtotal:$
-                    {cartItem.persistedReducer.cart.reduce(
-                      (total, item) => total + item.price * item.quantity,
-                      0
-                    )}
-                  </span>
+                      ))}
+                    </span>
+                    <span className="text-info">
+                      Subtotal:$
+                      {cartItem.persistedReducer.cart.reduce(
+                        (total, item) => total + item.price * item.quantity,
+                        0
+                      )}
+                    </span>
 
-                  <div className="card-actions"></div>
+                    <div className="card-actions"></div>
+                  </div>
                 </div>
               </div>
+              {user && !hideButtons && (
+                <Link
+                  to="/sell"
+                  className="btn btn-outline btn-info w-[120px] p-0 ml-5"
+                >
+                  Sell Product
+                </Link>
+              )}
             </div>
-            {user && !hideButtons && (
-              <Link
-                to="/sell"
-                className="btn btn-outline btn-info w-[120px] p-0 ml-5"
-              >
-                Sell Product
-              </Link>
-            )}
-          </div>
+          )}
+
           {error && <h1 className="text-center text-red-500">{error}</h1>}
 
           {/* Day and Night mode toggle */}
