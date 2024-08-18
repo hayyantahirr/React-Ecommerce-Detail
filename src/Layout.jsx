@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";// outlet
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Provider } from "react-redux";
@@ -11,7 +11,7 @@ function Layout() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Navbar />
-          <Outlet />
+          <Outlet /> 
           <Footer />
         </PersistGate>
       </Provider>
