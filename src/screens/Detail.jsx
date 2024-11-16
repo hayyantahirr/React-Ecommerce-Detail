@@ -151,7 +151,7 @@ const Detail = () => {
       )}
     </>
   );
-}  
+};
 export default Detail;
 
 // ### Simple Explanation:

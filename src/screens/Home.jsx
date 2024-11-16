@@ -62,7 +62,6 @@ const Home = () => {
 
   return (
     <>
-    
       {/* Welcome message displaying user's email */}
       <h1 className="text-2xl text-left ml-5">
         Welcome <span className="text-xl font-bold italic">{users?.email}</span>
@@ -75,24 +74,21 @@ const Home = () => {
           product.map((item) => {
             console.log(item);
             return (
-              
-                <Card
-                  title={item.title} // Add key prop to each Card component
-                  desc={item.description.slice(0, 50)} // Slice description to show only first 50 characters
-                  img={item.img}
-                  id={item.id}
-                  price={item.price}
-                  category={item.category}
-                  brand={item.brand}
-                />
-             
+              <Card
+                title={item.title} // Add key prop to each Card component
+                desc={item.description.slice(0, 50)} // Slice description to show only first 50 characters
+                img={item.img}
+                id={item.id}
+                price={item.price}
+                category={item.category}
+                brand={item.brand}
+              />
             );
           })
         ) : (
           <span className="loading loading-dots loading-lg"></span>
         )}
       </div>
-     
     </>
   );
 };

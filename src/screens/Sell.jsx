@@ -43,7 +43,7 @@ function Sell() {
         description: description.current.value,
       });
       console.log("Product added successfully");
-      navigate(-1); // Navigate back after successful submission
+      navigate("/home"); // Navigate back after successful submission
     } catch (e) {
       console.error("Error adding document: ", e);
     }
